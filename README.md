@@ -51,3 +51,4 @@ It is pertinent to note that two flows are shown. The ingestion flow (labeled us
 * Make the chat stateful
 * Integrate other websites and content
 * Present more analytical information (like the recent articles, the most popular ones, etc.).
+* Figure out how to deploy this solution.
