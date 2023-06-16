@@ -1,0 +1,63 @@
+@startuml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+
+!include <c4/C4_Container.puml>
+!include <office/Users/mobile_user.puml>
+!include <office/Users/users_blue.puml>
+!include <office/Users/user.puml>
+!include <office/Users/approver.puml>
+!include DEVICONS/code.puml
+!include DEVICONS/python.puml
+!include DEVICONS/database.puml
+!include FONTAWESOME/cloud.puml
+
+
+LAYOUT_TOP_DOWN()
+' LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
+SHOW_PERSON_OUTLINE()
+
+UpdateBoundaryStyle($bgColor="lightblue", $fontColor="brown", $borderColor="brown")
+AddBoundaryTag("ts", $bgColor="pink", $fontColor="red", $borderColor="white", $shadowing="true", $shape = RoundedBoxShape())
+AddRelTag("async", $lineStyle = DashedLine())
+
+title C4 Container Diagram: Fowlbot
+
+Person(user, User, "<$users_blue>\nDevelopers, architects and others interested in checking content on martinfowler.com")
+Person_Ext(martin, Martin Fowler, "<$approver>\nOwner of martinfowler.com")
+
+Container(ui, "UI", "Streamlit", "<$python><size:42><&browser></size>\nWeb app that uses the streamlit library")
+ContainerDb(db, "Vector Store", "FAISS", "<$database>\nStores embeddings\n(uses filesystem storage)")
+Boundary(etl, Web Scraper and Parser, 'TODO: Combine into a single application') {
+    Container(ingestor, "Ingestor", "Python", "<$python><$code>\nProvides functionality via API")
+    Container(scraper, "Scraper", "Scrapy", "<$python><$code>\nPulls candidate web pages and related metadata starting with https://martinfowler.com/tags")
+}
+Container_Ext(llm1, "LLM API", "OpenAI", "<$cloud>\nProvides access to OpenAI's language models and related services")
+Container_Ext(llm2, "Embeddings API", "OpenAI", "<$cloud>\nProvides access to OpenAI's embeddings API")
+
+System_Ext(dotcom, "martinfowler.com", "<size:48><&browser></size>\nWebsite with all the content")
+
+Lay_D(user, ui)
+Lay_D(ui, db)
+Lay_R(ui, llm1)
+Lay_L(ui, etl)
+Lay_L(ui, etl)
+Lay_L(db, etl)
+Lay_D(etl, llm2)
+
+Rel_L(etl, dotcom, 'A1. Scrapes webpages from')
+Rel_R(scraper, ingestor, 'A2. Provides webpage metadata to')
+Rel(ingestor, llm2, 'A3. Creates embeddings using')
+Rel_R(ingestor, db, 'A4. Stores embeddings into')
+
+Rel(ui, ingestor, 'B0. Caches metadata from')
+Rel(user, ui, 'B1. Asks questions to')
+Rel_R(ui, llm1, 'B2. Converts question into embeddings using')
+Rel_D(ui, db, 'B3. Queries embeddings from')
+Rel_R(ui, llm1, 'B4. Uses embeddings from vector db as context for question')
+'Rel_U(ui, user, 'B6. Provides responses to')
+Rel(martin, dotcom, 'Administers')
+
+@enduml

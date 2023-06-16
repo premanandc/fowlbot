@@ -1,5 +1,5 @@
 # :sunglasses: Welcome to Fowlbot!
-Fowlbot allows you to ask questions of the content of https://martinfowler.com
+Fowlbot allows you to ask questions of the content on https://martinfowler.com
 
 For example, you can ask it to see what Martin Fowler has had to say on the topic, like so:
 ![Happy query](./images/happy.png)
@@ -40,4 +40,14 @@ pip install -r requirements.txt
 8. If all goes well, you should see the UI pop up on your default browser. If not, you can navigate to it yourself at http://localhost:8501
 ![Default UI](./images/ui.png)
 
+## Architecture
+The C4 system context diagram for Fowlbot is shown below:
+![C4 System Context](images/fowlbot-system-context.png)
+The C4 container diagram for Fowlbot is shown below:
+![C4 Container](images/fowlbot-container.png)
+It is pertinent to note that two flows are shown. The ingestion flow (labeled using the '**A**' series) and the end user flow (labeled using the '**B**' series).
+
 ## Next steps
+* Make the chat stateful
+* Integrate other websites and content
+* Present more analytical information (like the recent articles, the most popular ones, etc.).
