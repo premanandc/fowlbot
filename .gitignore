@@ -1,0 +1,12 @@
+.idea/
+venv/
+*.iml
+.env
+raw/
+article_details.json
+article_headers.json
+*.pkl
+
+__pycache__/
+*.py[cod]
+*$py.class
