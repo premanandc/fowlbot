@@ -34,8 +34,8 @@ class Ingestor:
 
     def ingest(self):
         os.makedirs('./raw', exist_ok=True)
-        raw_documents = sum([article.load(self.force) for article in self.articles], [])
-        return raw_documents
+        with requests.Session() as session:
+            return sum([article.load(session, self.force) for article in self.articles], [])
 
 
 class Article:
@@ -50,18 +50,18 @@ class Article:
         name = raw_name[:-1] if raw_name.endswith('/') else raw_name
         return name if name.endswith('pdf') or name.endswith('html') else name + '.html'
 
-    def load(self, force=False):
+    def load(self, session: requests.Session, force=False):
         if force or not os.access(self.filename, os.R_OK):
-            self.write(self.fetch())
+            self.write(self.fetch(session))
         loader = UnstructuredPDFLoader(self.filename) if self.is_pdf() else UnstructuredHTMLLoader(self.filename)
         return loader.load()
 
     def is_pdf(self):
         return self.url.endswith('pdf')
 
-    def fetch(self):
+    def fetch(self, session: requests.Session):
         print(f'Fetching article from {self.url}')
-        return requests.get(self.url)
+        return session.get(self.url)
 
     def write(self, response):
         print(f'Writing file to {self.filename}')
@@ -78,5 +78,5 @@ if __name__ == '__main__':
     with open('./article_details.json') as file:
         articles = [article['link'] for article in json.load(file)]
 
-    ingestor = Ingestor(articles, force=False)
+    ingestor = Ingestor(articles, force=True)
     ingestor.ingest_and_store()
