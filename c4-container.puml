@@ -4,7 +4,6 @@
 !define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
 
 !include <c4/C4_Container.puml>
-!include <office/Users/mobile_user.puml>
 !include <office/Users/users_blue.puml>
 !include <office/Users/user.puml>
 !include <office/Users/approver.puml>
@@ -30,8 +29,8 @@ Person_Ext(martin, Martin Fowler, "<$approver>\nOwner of martinfowler.com")
 
 Container(ui, "UI", "Streamlit", "<$python><size:42><&browser></size>\nWeb app that uses the streamlit library")
 ContainerDb(db, "Vector Store", "FAISS", "<$database>\nStores embeddings\n(uses filesystem storage)")
-Boundary(etl, Web Scraper and Parser, 'TODO: Combine into a single application') {
-    Container(ingestor, "Ingestor", "Python", "<$python><$code>\nProvides functionality via API")
+Boundary(etl, 'Web Scraper, Parser and Ingestor', 'TODO: Combine into a single component') {
+    Container(ingestor, "Ingestor", "Python", "<$python><$code>\nUses OpenAI to create embeddings and stores them in the vector store")
     Container(scraper, "Scraper", "Scrapy", "<$python><$code>\nPulls candidate web pages and related metadata starting with https://martinfowler.com/tags")
 }
 Container_Ext(llm1, "LLM API", "OpenAI", "<$cloud>\nProvides access to OpenAI's language models and related services")
