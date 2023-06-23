@@ -41,11 +41,11 @@ class Ingestor:
 class Article:
     def __init__(self, url: str):
         self.url = url
-        self.filename = f'./raw/{self.cleanse(url)}'
+        self.filename = f'./raw/{self._cleanse(url)}'
         self.readable = os.access(self.filename, os.R_OK)
 
     @staticmethod
-    def cleanse(url):
+    def _cleanse(url):
         raw_name = os.path.basename(url)
         name = raw_name[:-1] if raw_name.endswith('/') else raw_name
         return name if name.endswith('pdf') or name.endswith('html') else name + '.html'

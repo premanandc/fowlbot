@@ -29,7 +29,7 @@ pip install -r requirements.txt
 ```
 5. Create a .env file and specify your `OPENAI_API_KEY`. You can obtain one from [OpenAI's website](https://platform.openai.com/account/api-keys). Make sure you understand the OpenAI's [recommended practices for key safety](https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety) while you are there. You can use the `example.env` file to create your `.env file.
     > Note: You may need to create an account with OpenAI before you can create API keys.
-6. Run the ingester:
+6. Run the ingestor:
 ```shell
 ./ingestor.sh
 ```
