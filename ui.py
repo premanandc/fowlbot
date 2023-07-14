@@ -10,6 +10,7 @@ import streamlit as st
 from dotenv import load_dotenv, find_dotenv
 from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.chat_models import ChatOpenAI
+from langchain.cache import InMemoryCache
 
 LOCAL_INDEX = './fowler.pkl'
 SESSION_KEY = 'session_cache'
@@ -35,7 +36,7 @@ def lookup(_source):
     raw_key = basename(_source)
     stripped_key = splitext(raw_key)[0]
     toc = st.session_state.toc
-    return as_markdown(toc.get(raw_key, toc.get(stripped_key, "No credible sources found :disappointed:")))
+    return as_markdown(toc.get(raw_key, toc.get(stripped_key, "No credible sources found :neutral_face:")))
 
 
 def is_ingested():
@@ -49,6 +50,7 @@ def load_index():
 
 st.title(':sunglasses: Welcome to Fowlbot!')
 langchain.verbose = True
+langchain.llm_cache = InMemoryCache()
 
 _ = load_dotenv(find_dotenv())
 question = st.text_input(label='What does Martin say about...?', placeholder='Your question here and press Enter...')

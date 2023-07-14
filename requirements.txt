@@ -1,10 +1,10 @@
-langchain==0.0.202
+langchain==0.0.225
 python-dotenv==1.0.0
-streamlit==1.23.1
+streamlit==1.24.0
 openai==0.27.8
 tiktoken==0.4.0
 faiss-cpu==1.7.4
 watchdog==3.0.0
-unstructured==0.7.5
+unstructured==0.7.12
 requests==2.31.0
 scrapy==2.9.0
